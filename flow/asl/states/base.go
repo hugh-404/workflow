@@ -20,6 +20,7 @@ type Base struct {
 
 type IState interface {
 	Run(context.Context)
+	Compile(string) (IState, error)
 }
 
 type StateCommon struct {
@@ -30,4 +31,9 @@ type StateCommon struct {
 	InputPath    string
 	OutputPath   string
 	ExecutionCtx *execution.ExecutionContext
+	End bool
 }
+
+const (
+	State_Task = "Task"
+)
