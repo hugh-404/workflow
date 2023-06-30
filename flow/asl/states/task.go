@@ -23,3 +23,12 @@ func (s *TaskState)Compile(asl string) (IState, error) {
 	}
 	return state, nil
 }
+
+func CompileTask(asl string) (IState, error) {
+	var state *TaskState
+	err := json.Unmarshal([]byte(asl),&state)
+	if err != nil {
+		return nil, err
+	}
+	return state, nil
+}
