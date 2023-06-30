@@ -1,8 +1,6 @@
 package compiler
 
 import (
-	"encoding/json"
-	"fmt"
 	"testing"
 
 	"github.com/go-playground/assert/v2"
@@ -26,18 +24,3 @@ func TestCompile(t *testing.T) {
 	assert.NotEqual(t, sm, nil)
 	assert.Equal(t, len(sm.States), 1)
 }
-
-func TestInterface(t *testing.T) {
-	var a A
-	a = &B{}
-	err := json.Unmarshal([]byte("{}"), &a)
-	fmt.Println(err)
-}
-
-type A interface {
-	K()
-}
-type B struct {
-
-}
-func (b *B)K() {}

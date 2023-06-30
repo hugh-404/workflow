@@ -20,7 +20,6 @@ type Base struct {
 
 type IState interface {
 	Run(context.Context)
-	Compile(string) (IState, error)
 }
 
 type StateCommon struct {
@@ -33,11 +32,3 @@ type StateCommon struct {
 	ExecutionCtx *execution.ExecutionContext
 	End bool
 }
-
-const (
-	State_Task = "Task"
-	State_Result = "Result"
-	State_Success = "Success"
-	State_Choice = "Choice"
-	State_Parallel = "Parallel"
-)

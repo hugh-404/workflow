@@ -38,8 +38,7 @@ func unsafeCompile(asl string) (*states.StateMachine, error) {
 
 	stateMap := make(map[string]states.IState)
 	for name, stateObj := range tempMachine.States {
-		stateBytes, _ := json.Marshal(stateObj)
-		realState, err := UseStateCompiler(stateObj["Type"].(string), string(stateBytes))
+		realState, err := compile(stateObj)
 		if err != nil {
 			return nil, err
 		}
