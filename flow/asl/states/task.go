@@ -3,6 +3,8 @@ package states
 import (
 	"context"
 	"encoding/json"
+
+	"github.com/workflow/flow/asl/execution"
 )
 
 
@@ -11,8 +13,8 @@ type TaskState struct {
 	Resource string
 }
 
-func (s *TaskState)Run(ctx context.Context) {
-
+func (s *TaskState)Run(ctx context.Context, exeCtx *execution.ExecutionContext) (string, error) {
+	return "", nil
 }
 
 func (s *TaskState)Compile(asl string) (IState, error) {

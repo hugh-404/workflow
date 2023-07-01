@@ -6,20 +6,8 @@ import (
 	"github.com/workflow/flow/asl/execution"
 )
 
-type StateMachine struct {
-	Base
-	States map[string]IState
-}
-
-type Base struct {
-	Comment        string
-	StartAt        string
-	Version        string
-	TimeoutSeconds int64
-}
-
 type IState interface {
-	Run(context.Context)
+	Run(context.Context, *execution.ExecutionContext) (string, error)
 }
 
 type StateCommon struct {
@@ -29,6 +17,5 @@ type StateCommon struct {
 	Next         string
 	InputPath    string
 	OutputPath   string
-	ExecutionCtx *execution.ExecutionContext
 	End bool
 }
