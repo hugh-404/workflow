@@ -9,7 +9,9 @@ import (
 	"github.com/workflow/flow/components/storage/fetcher"
 )
 
-func Run(ctx context.Context)(interface{}, error) {
+type AwxCient struct {}
+
+func (c *AwxCient) Run(ctx context.Context, params map[string]interface{})(interface{}, error) {
 	fetcher := &fetcher.MemFetcher{}
 	exeCtx, err := (&scheduler.Scheduler{}).StartExecution(ctx, fetcher.Fetch(ctx, ""))
 	if err != nil {
