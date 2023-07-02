@@ -9,10 +9,7 @@ const (
 		  "Result": {
 			"Type": "Result",
 			"Param": {
-			  "Result": {
-				"A": "ResultA",
-				"B": "ResultB"
-			  }
+			  "Result": {"result":{"code":"200","description":"desc"}}
 			},
 			"Next": "Success"
 		  },
