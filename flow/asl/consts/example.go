@@ -9,9 +9,31 @@ const (
 		  "Result": {
 			"Type": "Result",
 			"Param": {
-			  "Result": {"result":{"code":"200","description":"desc"}}
+			  "Result": {
+				"A": "ResultA",
+				"B": "ResultB"
+			  }
 			},
-			"Next": "Success"
+			"Next": "Choice"
+		  },
+		  "Choice": {
+			"Type": "Choice",
+			"Branches": [
+			  {
+				"Variable": "test text",
+				"StringEquals": "test text",
+				"Next": "Success"
+			  },
+			  {
+				"And": [
+				  {
+					"Variable": "test text",
+					"StringEndWith": "text"
+				  }
+				],
+				"Next": "Success"
+			  }
+			]
 		  },
 		  "Success": {
 			"Type": "Success",

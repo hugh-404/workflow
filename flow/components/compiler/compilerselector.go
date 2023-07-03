@@ -54,6 +54,8 @@ func getStateProto(stateType string) (states.IState, error) {
 		state = &states.SuccessState{}
 	case consts.State_Task:
 		state = &states.TaskState{}
+	case consts.State_Choice:
+		state = &states.ChoiceState{}
 
 	}
 	if state == nil {

@@ -1,4 +1,4 @@
-package operators
+package terms
 
 type StringEqual struct {
 	
