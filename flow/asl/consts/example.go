@@ -21,14 +21,14 @@ const (
 			"Branches": [
 			  {
 				"Variable": "test text",
-				"StringEquals": "test text",
-				"Next": "Success"
+				"StringEquals": "test atext",
+				"Next": "Fail"
 			  },
 			  {
 				"And": [
 				  {
 					"Variable": "test text",
-					"StringEndWith": "text"
+					"StringContains": "text"
 				  }
 				],
 				"Next": "Success"
@@ -36,6 +36,10 @@ const (
 			]
 		  },
 		  "Success": {
+			"Type": "Success",
+			"End": true
+		  },
+		  "Fail": {
 			"Type": "Success",
 			"End": true
 		  }
