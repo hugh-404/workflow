@@ -14,6 +14,6 @@ type ResultState struct {
 
 func (s *ResultState) Run(ctx context.Context, exeCtx *execution.ExecutionContext) (string, error) {
 	fmt.Println("run result")
-	exeCtx.GlobalResult[consts.GlobalResult_Result] = s.Param["Result"]
+	exeCtx.GlobalStore[consts.GlobalResult_Result] = s.Param["Result"]
 	return s.Next, nil
 }
