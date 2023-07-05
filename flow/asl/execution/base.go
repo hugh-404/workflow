@@ -8,4 +8,6 @@ type ExecutionContext struct {
 
 func (c *ExecutionContext)Init() {
 	c.GlobalStore = map[string]interface{}{}
+	c.InputData = map[string]interface{}{}
+	c.OutputData = map[string]interface{}{}
 }

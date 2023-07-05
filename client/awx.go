@@ -17,5 +17,5 @@ func (c *AwxCient) Run(ctx context.Context, params map[string]interface{})(inter
 	if err != nil {
 		return nil, errors.Wrap(err, "Run StartExecution error")
 	}
-	return exeCtx.GlobalResult[consts.GlobalResult_Result], nil
+	return exeCtx.GlobalStore[consts.GlobalResult_Result], nil
 }

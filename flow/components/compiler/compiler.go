@@ -43,6 +43,7 @@ func unsafeCompile(asl string) (*sm.StateMachine, error) {
 		if err != nil {
 			return nil, err
 		}
+		realState.SetName(name)
 		stateMap[name] = realState
 	}
 

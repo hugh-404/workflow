@@ -17,7 +17,7 @@ func (s *Scheduler) StartExecution(ctx context.Context, asl string) (*execution.
 		fmt.Println("compile error")
 		return nil, errors.Wrap(err, "StartExecution Compile error")
 	}
-	fsm.ExecutionCtx = &execution.ExecutionContext{}
+	fsm.SetExecutionCtx(&execution.ExecutionContext{})
 	fsm.ExecutionCtx.Init()
 	err = fsm.Run(ctx)
 	if err != nil {

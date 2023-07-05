@@ -21,6 +21,13 @@ type Base struct {
 	TimeoutSeconds int64
 }
 
+func (sm *StateMachine) SetExecutionCtx(ctx *execution.ExecutionContext) {
+	sm.ExecutionCtx = ctx
+	for _, state := range sm.States {
+		state.SetExecutionCtx(ctx)
+	}
+}
+
 func (sm *StateMachine) Run(ctx context.Context) error {
 	stateMap := sm.States
 	nextState := sm.StartAt
