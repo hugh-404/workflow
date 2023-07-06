@@ -1,4 +1,4 @@
-package fetcher
+package aslstore
 
 import (
 	"context"
@@ -10,6 +10,6 @@ type MemFetcher struct {
 
 }
 
-func (f *MemFetcher) Fetch(ctx context.Context, key string) string {
+func (f *MemFetcher) Fetch(ctx context.Context, keyMap map[string]interface{}) string {
 	return consts.SimpleResultAsl
 }
