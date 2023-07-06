@@ -1,5 +1,8 @@
 package consts
 
+
+type GlobalStoreKey = string
 const (
-	GlobalResult_Result = "Result"
+	GlobalStore_Result GlobalStoreKey = "Result"
+	GlobalStore_Input GlobalStoreKey = "Input"
 )

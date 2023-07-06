@@ -13,9 +13,9 @@ type AwxCient struct {}
 
 func (c *AwxCient) Run(ctx context.Context, params map[string]interface{})(interface{}, error) {
 	fetcher := &fetcher.MemFetcher{}
-	exeCtx, err := (&scheduler.Scheduler{}).StartExecution(ctx, fetcher.Fetch(ctx, ""))
+	exeCtx, err := (&scheduler.Scheduler{}).StartExecution(ctx, fetcher.Fetch(ctx, ""), params)
 	if err != nil {
 		return nil, errors.Wrap(err, "Run StartExecution error")
 	}
-	return exeCtx.GlobalStore[consts.GlobalResult_Result], nil
+	return exeCtx.GlobalStore[consts.GlobalStore_Result], nil
 }

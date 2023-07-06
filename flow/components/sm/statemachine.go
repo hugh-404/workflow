@@ -4,6 +4,7 @@ import (
 	"context"
 
 	"github.com/pkg/errors"
+	"github.com/workflow/flow/asl/consts"
 	"github.com/workflow/flow/asl/execution"
 	"github.com/workflow/flow/asl/states"
 )
@@ -32,9 +33,11 @@ func (sm *StateMachine) Run(ctx context.Context) error {
 	stateMap := sm.States
 	nextState := sm.StartAt
 	var err error
+	sm.ExecutionCtx.InputData[nextState] = sm.ExecutionCtx.GlobalStore[consts.GlobalStore_Input]
 	for stateMap[nextState] != nil {
 		curState := nextState
 		nextState, err = sm.runState(ctx, stateMap[nextState])
+		sm.ExecutionCtx.InputData[nextState] = sm.ExecutionCtx.OutputData[curState]
 		if err != nil {
 			return errors.Wrapf(err, "Run runState error: %v", curState)
 		}

@@ -2,6 +2,7 @@ package states
 
 import (
 	"context"
+	"encoding/json"
 	"fmt"
 	"strings"
 
@@ -11,7 +12,8 @@ import (
 
 type ChoiceState struct {
 	StateCommon
-	Branches []Branch  `json:"Branches"`
+	Branches []Branch  `json:"Branches,omitempty"`
+	Default string	`json:"Default,omitempty"`
 }
 
 type Branch struct {
@@ -20,7 +22,7 @@ type Branch struct {
 }
 
 type ChoiceComparator struct {
-	Variable        interface{}  `json:"Variable,omitempty"`
+	Variable        *ReaderCtx  `json:"Variable,omitempty"`
 	StringEquals    *StringEquals  `json:"StringEquals,omitempty"`
 	NumericEquals   *NumericEquals    `json:"NumericEquals,omitempty"`
 	NumericGreaterThan *NumericGreaterThan  `json:"NumericGreaterThan,omitempty"`
@@ -61,19 +63,21 @@ func (c *StringEndWith) Compare(operand interface{}) bool {
 
 type NumericEquals int
 func (c *NumericEquals) Compare(operand interface{}) bool {
-	if s, ok := operand.(int); !ok {
+	if s, ok := operand.(json.Number); !ok {
 		panic("NumericEquals invalid state")
 	} else {
-		return s == int(*c)
+		n, _ := s.Int64()
+		return n == int64(*c)
 	}
 }
 
 type NumericGreaterThan int
 func (c *NumericGreaterThan) Compare(operand interface{}) bool {
-	if s, ok := operand.(int); !ok {
+	if s, ok := operand.(json.Number); !ok {
 		panic("NumericGreaterThan invalid state")
 	} else {
-		return s > int(*c)
+		n, _ := s.Int64()
+		return n > int64(*c)
 	}
 }
 
@@ -94,34 +98,38 @@ func (s *ChoiceState) Run(ctx context.Context, exeCtx *execution.ExecutionContex
 		}
 	}()
 	for _, b := range s.Branches {
-		if b.ChoiceComparator.Compare(ctx) {
+		if b.ChoiceComparator.Compare(ctx, s) {
 			return b.Next, nil
 		}
 	}
-	return "", errors.New("No branch matches")
+	return s.Default, nil
 }
 
-func (c *ChoiceComparator)Compare(ctx context.Context) bool {
+func (c *ChoiceComparator)Compare(ctx context.Context, state IState) bool {
 	if c.Variable != nil {
 		// compare directly
+		realVar, err := c.Variable.Read(state)
+		if err != nil {
+			realVar = string(*c.Variable)
+		}
 		if c.StringEquals != nil {
-			return c.StringEquals.Compare(c.Variable)
+			return c.StringEquals.Compare(realVar)
 		} else if c.StringContains != nil {
-			return c.StringContains.Compare(c.Variable)
+			return c.StringContains.Compare(realVar)
 		} else if c.StringEndWith != nil {
-			return c.StringEndWith.Compare(c.Variable)
+			return c.StringEndWith.Compare(realVar)
 		} else if c.NumericEquals != nil {
-			return c.NumericEquals.Compare(c.Variable)
+			return c.NumericEquals.Compare(realVar)
 		} else if c.NumericGreaterThan != nil {
-			return c.NumericGreaterThan.Compare(c.Variable)
+			return c.NumericGreaterThan.Compare(realVar)
 		} else if c.Boolean != nil {
-			return c.Boolean.Compare(c.Variable)
+			return c.Boolean.Compare(realVar)
 		}
 	} else {
 		// use and|not|or comparator
 		if len(c.And) > 0 {
 			for _, ic := range c.And {
-				if !ic.Compare(ctx) {
+				if !ic.Compare(ctx, state) {
 					return false
 				}
 			}
@@ -129,14 +137,14 @@ func (c *ChoiceComparator)Compare(ctx context.Context) bool {
 		}
 		if len(c.Or) > 0 {
 			for _, ic := range c.Or {
-				if ic.Compare(ctx) {
+				if ic.Compare(ctx, state) {
 					return true
 				}
 			}
 			return false
 		}
 		if c.Not != nil {
-			return !c.Compare(ctx)
+			return !c.Compare(ctx, state)
 		}
 	}
 	panic("invalid choice state")

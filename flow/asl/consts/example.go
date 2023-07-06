@@ -20,14 +20,19 @@ const (
 			"Type": "Choice",
 			"Branches": [
 			  {
-				"Variable": "test text",
+				"Variable": "$$.Var2",
 				"StringEquals": "test atext",
+				"Next": "Fail"
+			  },
+			  {
+				"Variable": "$$.Var1",
+				"NumericEquals": 9,
 				"Next": "Fail"
 			  },
 			  {
 				"And": [
 				  {
-					"Variable": "test text",
+					"Variable": "$$.Var3.InnerS",
 					"StringContains": "text"
 				  }
 				],

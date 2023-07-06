@@ -19,6 +19,7 @@ func awxMockGetHandler(ctx *gin.Context) {
 	params := map[string]interface{}{
 		"Header": ctx.Request.Header,
 		"Query": ctx.Request.URL.Query(),
+		"Path": ctx.Request.URL.Path,
 	}
 	ctx.Request.URL.Query()
 	result, err := (&client.AwxCient{}).Run(context.TODO(), params)
