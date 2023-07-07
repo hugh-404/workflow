@@ -10,6 +10,6 @@ type MemFetcher struct {
 
 }
 
-func (f *MemFetcher) Fetch(ctx context.Context, keyMap map[string]interface{}) string {
+func (f *MemFetcher) Fetch(ctx context.Context, key string) string {
 	return consts.SimpleResultAsl
 }
