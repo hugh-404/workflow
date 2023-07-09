@@ -1,9 +1,15 @@
 package execution
 
 type ExecutionContext struct {
+	StateRelation
 	GlobalStore map[string]interface{}
 	InputData map[string]interface{}
 	OutputData map[string]interface{}
+}
+
+type StateRelation struct {
+	Parent string
+	Precending string
 }
 
 func (c *ExecutionContext)Init() {
